@@ -31,18 +31,18 @@ typedef struct {
 } Position;
 
 // Keywords list
-const char *keywords[] = {
+static const char *KEYWORDS[] = {
   "auto", "break", "case", "char", "const", "continue", "default", "do",
   "double", "else", "enum", "extern", "float", "for", "goto", "if",
   "int", "long", "register", "return", "short", "signed", "sizeof", "static",
   "struct", "switch", "typedef", "union", "unsigned", "void", "volatile", "while"
 };
-static const int num_keywords = sizeof keywords / sizeof keywords[0];
+static const size_t NUM_KEYWORDS = sizeof KEYWORDS / sizeof KEYWORDS[0];
 
 // Helper to check if a string is a keyword
 int is_keyword(const char *str) {
-  for (int i = 0; i < num_keywords; i++) {
-    if (strcmp(keywords[i], str) == 0) return 1;
+  for (int i = 0; i < NUM_KEYWORDS; i++) {
+    if (strcmp(KEYWORDS[i], str) == 0) return 1;
   }
   return 0;
 }
@@ -78,7 +78,7 @@ char get_char(FILE *fp, Position *pos) {
 void unget_char(char c, FILE *fp, Position *pos) {
   if (c == '\n') {
     pos->row--;
-    pos->col = 1; 
+    pos->col = 1;
   } else {
     pos->col--;
   }
@@ -96,9 +96,9 @@ Token getNextToken(FILE *fp, Position *pos) {
   Token token;
   token.lexeme[0] = '\0';
   token.type = TOKEN_UNKNOWN;
-  
+
   char c;
-  
+
   while ((c = get_char(fp, pos)) != EOF) {
     token.row = pos->row;
     token.col = pos->col - 1; // -1 because get_char increments
@@ -144,14 +144,14 @@ Token getNextToken(FILE *fp, Position *pos) {
       token.lexeme[i++] = '"';
       while ((c = get_char(fp, pos)) != EOF) {
         if (c == '"') break; // End of string
-        
+
         if (c == '\\') {
           // Handle escape sequence
           if (i < 254) token.lexeme[i++] = c; // Add the backslash
           c = get_char(fp, pos); // Get the escaped char
           if (c == EOF) break;
         }
-        
+
         if (i < 254) token.lexeme[i++] = c;
       }
       token.lexeme[i++] = '"';
@@ -166,14 +166,14 @@ Token getNextToken(FILE *fp, Position *pos) {
       token.lexeme[i++] = '\'';
       while ((c = get_char(fp, pos)) != EOF) {
         if (c == '\'') break; // End of char literal
-        
+
         if (c == '\\') {
           // Handle escape sequence inside char literal
           if (i < 254) token.lexeme[i++] = c; // Add the backslash
           c = get_char(fp, pos); // Get the escaped char
           if (c == EOF) break;
         }
-        
+
         if (i < 254) token.lexeme[i++] = c;
       }
       token.lexeme[i++] = '\'';
@@ -191,7 +191,7 @@ Token getNextToken(FILE *fp, Position *pos) {
       }
       token.lexeme[i] = '\0';
       unget_char(c, fp, pos);
-      
+
       if (is_keyword(token.lexeme)) {
         token.type = TOKEN_KEYWORD;
       } else {
@@ -226,7 +226,7 @@ Token getNextToken(FILE *fp, Position *pos) {
       int i = 0;
       token.lexeme[i++] = c;
       char next = get_char(fp, pos);
-      
+
       // Check for compound operators
       int is_compound = 0;
       if (strchr("=+-&|", next)) {
@@ -242,7 +242,7 @@ Token getNextToken(FILE *fp, Position *pos) {
       if (!is_compound) {
         unget_char(next, fp, pos);
       }
-      
+
       token.lexeme[i] = '\0';
       token.type = TOKEN_OPERATOR;
       return token;
@@ -273,10 +273,10 @@ int main(int argc, char *argv[]) {
   // Initialize Position struct
   Position pos = {1, 1};
   Token t;
-  
+
   // Pass pointer to struct
   while ((t = getNextToken(fp, &pos)).type != TOKEN_EOF) {
-    printf("%-10d %-10d %-20s %s\n", 
+    printf("%-10d %-10d %-20s %s\n",
            t.row, t.col, get_type_name(t.type), t.lexeme);
   }
 

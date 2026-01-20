@@ -4,7 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 
-const char *keywords[] = {
+const char *KEYWORDS[] = {
   "auto", "break", "case", "char", "const", "continue", "default", "do",
   "double", "else", "enum", "extern", "float", "for", "goto", "if",
   "inline", "int", "long", "register", "restrict", "return", "short",
@@ -13,8 +13,8 @@ const char *keywords[] = {
 };
 
 int is_keyword(const char *word) {
-  for (int i = 0; keywords[i]; i++)
-    if (strcmp(word, keywords[i]) == 0)
+  for (int i = 0; KEYWORDS[i]; i++)
+    if (strcmp(word, KEYWORDS[i]) == 0)
       return 1;
 
   return 0;

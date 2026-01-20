@@ -4,32 +4,30 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#define NUM_KEYWORDS (sizeof keywords / sizeof keywords[0])
-
-const char *keywords[] = {
+static const char *KEYWORDS[] = {
   "auto", "break", "case", "char", "const", "continue", "default", "do",
   "double", "else", "enum", "extern", "float", "for", "goto", "if",
   "int", "long", "register", "return", "short", "signed", "sizeof", "static",
   "struct", "switch", "typedef", "union", "unsigned", "void", "volatile", "while"
 };
+static const size_t NUM_KEYWORDS = sizeof KEYWORDS / sizeof KEYWORDS[0];
 
 bool is_keyword(const char *str) {
-  for (int i = 0; i < NUM_KEYWORDS; i++) {
-    if (strcmp(keywords[i], str) == 0) {
+  for (size_t i = 0; i < NUM_KEYWORDS; i++) {
+    if (strcmp(KEYWORDS[i], str) == 0)
       return true;
-    }
   }
   return false;
 }
 
 void identify_operator(const char *token) {
   if (strcmp(token, "+") == 0 || strcmp(token, "-") == 0 ||
-    strcmp(token, "*") == 0 || strcmp(token, "/") == 0 || 
+    strcmp(token, "*") == 0 || strcmp(token, "/") == 0 ||
     strcmp(token, "%") == 0) {
     printf("Arithmetic Operator: %s\n", token);
     return;
   }
-  
+
   if (strcmp(token, "<") == 0 || strcmp(token, ">") == 0 ||
     strcmp(token, "<=") == 0 || strcmp(token, ">=") == 0 ||
     strcmp(token, "==") == 0 || strcmp(token, "!=") == 0) {
@@ -37,7 +35,7 @@ void identify_operator(const char *token) {
     return;
   }
 
-  if (strcmp(token, "&&") == 0 || strcmp(token, "||") == 0 || 
+  if (strcmp(token, "&&") == 0 || strcmp(token, "||") == 0 ||
     strcmp(token, "!") == 0) {
     printf("Logical Operator: %s\n", token);
     return;
@@ -52,7 +50,7 @@ void identify_operator(const char *token) {
 void analyze_file(FILE *fp) {
   char ch;
   while ((ch = fgetc(fp)) != EOF) {
-    
+
     if (isspace(ch)) continue;
 
     if (ch == '/') {
@@ -123,7 +121,7 @@ void analyze_file(FILE *fp) {
     if (strchr("+-*%=!<>|&", ch)) {
       char buffer[4] = {ch, '\0', '\0', '\0'};
       char next = fgetc(fp);
-      
+
       int combined = 0;
       if (strchr("=+-&|", next)) {
         if ((ch == '+' && next == '+') || (ch == '-' && next == '-') ||
@@ -138,7 +136,7 @@ void analyze_file(FILE *fp) {
       if (!combined) {
         ungetc(next, fp);
       }
-      
+
       identify_operator(buffer);
       continue;
     }
