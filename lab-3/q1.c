@@ -1,15 +1,16 @@
+#include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include <stdbool.h>
 
 static const char *KEYWORDS[] = {
-  "auto", "break", "case", "char", "const", "continue", "default", "do",
-  "double", "else", "enum", "extern", "float", "for", "goto", "if",
-  "int", "long", "register", "return", "short", "signed", "sizeof", "static",
-  "struct", "switch", "typedef", "union", "unsigned", "void", "volatile", "while"
-};
+    "auto",     "break",  "case",    "char",   "const",    "continue",
+    "default",  "do",     "double",  "else",   "enum",     "extern",
+    "float",    "for",    "goto",    "if",     "int",      "long",
+    "register", "return", "short",   "signed", "sizeof",   "static",
+    "struct",   "switch", "typedef", "union",  "unsigned", "void",
+    "volatile", "while"};
 static const size_t NUM_KEYWORDS = sizeof KEYWORDS / sizeof KEYWORDS[0];
 
 bool is_keyword(const char *str) {
@@ -22,21 +23,21 @@ bool is_keyword(const char *str) {
 
 void identify_operator(const char *token) {
   if (strcmp(token, "+") == 0 || strcmp(token, "-") == 0 ||
-    strcmp(token, "*") == 0 || strcmp(token, "/") == 0 ||
-    strcmp(token, "%") == 0) {
+      strcmp(token, "*") == 0 || strcmp(token, "/") == 0 ||
+      strcmp(token, "%") == 0) {
     printf("Arithmetic Operator: %s\n", token);
     return;
   }
 
   if (strcmp(token, "<") == 0 || strcmp(token, ">") == 0 ||
-    strcmp(token, "<=") == 0 || strcmp(token, ">=") == 0 ||
-    strcmp(token, "==") == 0 || strcmp(token, "!=") == 0) {
+      strcmp(token, "<=") == 0 || strcmp(token, ">=") == 0 ||
+      strcmp(token, "==") == 0 || strcmp(token, "!=") == 0) {
     printf("Relational Operator: %s\n", token);
     return;
   }
 
   if (strcmp(token, "&&") == 0 || strcmp(token, "||") == 0 ||
-    strcmp(token, "!") == 0) {
+      strcmp(token, "!") == 0) {
     printf("Logical Operator: %s\n", token);
     return;
   }
@@ -51,18 +52,21 @@ void analyze_file(FILE *fp) {
   char ch;
   while ((ch = fgetc(fp)) != EOF) {
 
-    if (isspace(ch)) continue;
+    if (isspace(ch))
+      continue;
 
     if (ch == '/') {
       char next = fgetc(fp);
       if (next == '/') {
-        while ((ch = fgetc(fp)) != EOF && ch != '\n');
+        while ((ch = fgetc(fp)) != EOF && ch != '\n')
+          ;
         continue;
       } else if (next == '*') {
         while ((ch = fgetc(fp)) != EOF) {
           if (ch == '*') {
             char end_check = fgetc(fp);
-            if (end_check == '/') break;
+            if (end_check == '/')
+              break;
             ungetc(end_check, fp);
           }
         }
@@ -125,12 +129,12 @@ void analyze_file(FILE *fp) {
       int combined = 0;
       if (strchr("=+-&|", next)) {
         if ((ch == '+' && next == '+') || (ch == '-' && next == '-') ||
-          (ch == '&' && next == '&') || (ch == '|' && next == '|') ||
-          (ch == '=' && next == '=') || (ch == '!' && next == '=') ||
-          (ch == '<' && next == '=') || (ch == '>' && next == '=')) {
-            buffer[1] = next;
-            combined = 1;
-          }
+            (ch == '&' && next == '&') || (ch == '|' && next == '|') ||
+            (ch == '=' && next == '=') || (ch == '!' && next == '=') ||
+            (ch == '<' && next == '=') || (ch == '>' && next == '=')) {
+          buffer[1] = next;
+          combined = 1;
+        }
       }
 
       if (!combined) {

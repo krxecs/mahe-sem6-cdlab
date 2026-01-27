@@ -1,16 +1,16 @@
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 const char *KEYWORDS[] = {
-  "auto", "break", "case", "char", "const", "continue", "default", "do",
-  "double", "else", "enum", "extern", "float", "for", "goto", "if",
-  "inline", "int", "long", "register", "restrict", "return", "short",
-  "signed", "sizeof", "static", "struct", "switch", "typedef", "union",
-  "unsigned", "void", "volatile", "while", NULL
-};
+    "auto",     "break",    "case",     "char",   "const",   "continue",
+    "default",  "do",       "double",   "else",   "enum",    "extern",
+    "float",    "for",      "goto",     "if",     "inline",  "int",
+    "long",     "register", "restrict", "return", "short",   "signed",
+    "sizeof",   "static",   "struct",   "switch", "typedef", "union",
+    "unsigned", "void",     "volatile", "while",  NULL};
 
 int is_keyword(const char *word) {
   for (int i = 0; KEYWORDS[i]; i++)
@@ -44,14 +44,17 @@ int main(int argc, char *argv[]) {
     if (c == '\'') {
       putchar(c);
       c = fgetc(fin);
-      if (c == EOF) continue;
+      if (c == EOF)
+        continue;
       else if (c == '\'') {
         putchar(c);
         c = fgetc(fin);
-        if (c == EOF) continue;
+        if (c == EOF)
+          continue;
       }
       putchar(c);
-      if (c == EOF) continue;
+      if (c == EOF)
+        continue;
       c = fgetc(fin);
     }
     if (c == '"') {
@@ -74,7 +77,8 @@ int main(int argc, char *argv[]) {
       else
         fputs(buffer, stdout);
 
-      if (c == EOF) break;
+      if (c == EOF)
+        break;
     }
     putchar(c);
   }

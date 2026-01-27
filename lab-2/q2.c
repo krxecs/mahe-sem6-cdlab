@@ -1,7 +1,7 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #define MAX_LINE 4096
 
@@ -31,9 +31,9 @@ int main(int argc, char *argv[]) {
     size_t len = strlen(buffer);
 
     int has_continuation = 0;
-    if (len >= 2 && buffer[len-1] == '\n' && buffer[len-2] == '\\') {
+    if (len >= 2 && buffer[len - 1] == '\n' && buffer[len - 2] == '\\') {
       has_continuation = 1;
-    } else if (len >= 1 && buffer[len-1] == '\\') {
+    } else if (len >= 1 && buffer[len - 1] == '\\') {
       has_continuation = 1;
     }
 

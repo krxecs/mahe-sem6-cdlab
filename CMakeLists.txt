@@ -17,6 +17,8 @@ if (uthash_ADDED)
   target_sources(uthash INTERFACE ${uthash_sources})
 endif ()
 
+CPMGetPackage(Format.cmake)
+
 add_subdirectory(lab-1)
 add_subdirectory(lab-2)
 add_subdirectory(lab-3)

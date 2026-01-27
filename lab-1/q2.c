@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
   long pos = file_size - 1;
   while (pos >= 0) {
     fseek(src, pos, SEEK_SET);
-    
+
     int ch = fgetc(src);
     if (ch != EOF)
       fputc(ch, dest);
@@ -48,4 +48,3 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-
