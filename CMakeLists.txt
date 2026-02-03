@@ -19,8 +19,8 @@ endif ()
 
 CPMGetPackage(Format.cmake)
 
-add_subdirectory(lab-1)
-add_subdirectory(lab-2)
-add_subdirectory(lab-3)
-add_subdirectory(lab-4)
+add_subdirectory(lab-01)
+add_subdirectory(lab-02)
+add_subdirectory(lab-03)
+add_subdirectory(lab-04)
 add_subdirectory(lab-05)
